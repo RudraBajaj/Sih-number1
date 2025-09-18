@@ -455,10 +455,11 @@ export default function SignInPage() {
                                                     type="email"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
-                                                    className={`w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 backdrop-blur-sm border rounded-lg focus:outline-none focus:ring-2 transition-colors ${isDark
+                                                    className={`w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${isDark
                                                         ? 'bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-blue-400 focus:border-blue-400'
                                                         : 'bg-white/70 border-slate-300 text-slate-900 placeholder-slate-500 focus:ring-blue-500 focus:border-blue-500'
                                                         }`}
+
                                                     placeholder="Enter your email"
                                                     required
                                                 />
@@ -481,13 +482,14 @@ export default function SignInPage() {
                                                     type={showPassword ? 'text' : 'password'}
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
-                                                    className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 backdrop-blur-sm border rounded-lg focus:outline-none focus:ring-2 transition-colors ${isDark
+                                                    className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${isDark
                                                         ? 'bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-blue-400 focus:border-blue-400'
                                                         : 'bg-white/70 border-slate-300 text-slate-900 placeholder-slate-500 focus:ring-blue-500 focus:border-blue-500'
                                                         }`}
                                                     placeholder="Enter your password"
                                                     required
                                                 />
+
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowPassword(!showPassword)}
