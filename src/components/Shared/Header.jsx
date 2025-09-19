@@ -1,5 +1,5 @@
 import React from 'react';
-
+import logoRemoved from '../../assets/images/logo-removed.png';
 const Header = ({ userRole = 'student' }) => {
     const getUserRoleConfig = () => {
         switch (userRole) {
@@ -38,9 +38,11 @@ const Header = ({ userRole = 'student' }) => {
                 <div className="flex justify-between items-center py-4">
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">A</span>
-                        </div>
+                        <img
+                            src={logoRemoved}
+                            alt="AlumNexus Logo"
+                            className="w-8 h-8 rounded object-cover"
+                        />
                         <span className="text-xl font-bold text-gray-900">{config.logo}</span>
                     </div>
 
@@ -50,8 +52,8 @@ const Header = ({ userRole = 'student' }) => {
                             <button
                                 key={index}
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${item === 'Dashboard'
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'bg-blue-100 text-blue-700'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 {item === 'Dashboard' && (
