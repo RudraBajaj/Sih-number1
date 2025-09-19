@@ -7,9 +7,10 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import StudentDashboard from "../pages/student-dashboard/StudentDashboard";
 import AlumniDashboard from "../pages/alumni-dashboard/AlumniDashboard";
+import Profile from "../pages/Profile/Profile";
+import AdminDashboard from "../pages/admin-dashboard/AdminDashboard";
 
 //Missing pages 
-const AdminDashboard = () => <div><h1>Admin Dashboard Works! ⚡</h1></div>;
 const Events = () => <div><h1>Events Works! 📅</h1></div>;
 const Donations = () => <div><h1>Donations Works! 💰</h1></div>;
 const Feedback = () => <div><h1>Feedback Works! 💬</h1></div>;
@@ -32,6 +33,7 @@ const AppRoute = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/donations" element={<Donations />} />
             <Route path="/feedback" element={<Feedback />} />
+            <Route path="/profile" element={<Profile />} />
             {/* 404 Fallback  */}
             <Route path="*" element={<NotFound />} />
         </Routes>
