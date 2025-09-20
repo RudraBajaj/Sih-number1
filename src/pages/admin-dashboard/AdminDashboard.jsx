@@ -1,582 +1,1014 @@
 import React, { useState } from 'react';
 
 export default function AdminDashboard() {
-    const [activeTab, setActiveTab] = useState('overview');
-    const [selectedFilter, setSelectedFilter] = useState({
-        userRole: 'All Roles',
-        dateRange: 'Last 30 days',
-        activityType: 'All Activities',
-        status: 'All Status'
+  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedFilter, setSelectedFilter] = useState({
+    userRole: 'All Roles',
+    dateRange: 'Last 30 days',
+    activityType: 'All Activities',
+    status: 'All Status'
+  });
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+
+  const statsData = [
+    {
+      title: "Manage Users",
+      subtitle: "Oversee user registrations, approvals, and role management",
+      value: "1,247",
+      label: "total users",
+      growth: "+12.5%",
+      color: "blue",
+      icon: "👥"
+    },
+    {
+      title: "Create Events",
+      subtitle: "Plan and manage institutional events and activities",
+      value: "24",
+      label: "active events",
+      growth: "+8.3%",
+      color: "green",
+      icon: "📅"
+    },
+    {
+      title: "View Analytics",
+      subtitle: "Monitor platform performance and user engagement",
+      value: "89",
+      label: "engagement rate",
+      growth: "+15.2%",
+      color: "purple",
+      icon: "📊"
+    },
+    {
+      title: "System Reports",
+      subtitle: "Generate comprehensive reports and system monitoring",
+      value: "156",
+      label: "reports generated",
+      growth: "+22.1%",
+      color: "orange",
+      icon: "📋"
+    }
+  ];
+
+  const recentUsers = [
+    {
+      name: "John Doe",
+      email: "john@example.com",
+      role: "Alumni",
+      status: "Pending",
+      joinDate: "2025-09-18",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face"
+    },
+    {
+      name: "Sarah Wilson",
+      email: "sarah@example.com",
+      role: "Student",
+      status: "Approved",
+      joinDate: "2025-09-17",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b4c0?w=40&h=40&fit=crop&crop=face"
+    },
+    {
+      name: "Michael Chen",
+      email: "michael@example.com",
+      role: "Alumni",
+      status: "Approved",
+      joinDate: "2025-09-16",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"
+    },
+    {
+      name: "Emily Davis",
+      email: "emily@example.com",
+      role: "Faculty",
+      status: "Pending",
+      joinDate: "2025-09-15",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face"
+    }
+  ];
+
+  const upcomingEvents = [
+    {
+      title: "Alumni Meetup 2024",
+      date: "Dec 15, 2024",
+      attendees: 45,
+      status: "Published",
+      organizer: "Admin"
+    },
+    {
+      title: "Career Workshop",
+      date: "Nov 20, 2024",
+      attendees: 23,
+      status: "Draft",
+      organizer: "Sarah Wilson"
+    },
+    {
+      title: "Tech Talk: AI",
+      date: "Nov 10, 2024",
+      attendees: 67,
+      status: "Published",
+      organizer: "Admin"
+    }
+  ];
+
+  const systemMetrics = [
+    { label: "Server Uptime", value: "99.9%", status: "healthy" },
+    { label: "Database Performance", value: "Good", status: "healthy" },
+    { label: "Active Sessions", value: "234", status: "normal" },
+    { label: "Storage Usage", value: "67%", status: "warning" }
+  ];
+
+  const handleFilterChange = (filterType, value) => {
+    setSelectedFilter(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
+  };
+
+  const resetFilters = () => {
+    setSelectedFilter({
+      userRole: 'All Roles',
+      dateRange: 'Last 30 days',
+      activityType: 'All Activities',
+      status: 'All Status'
     });
-    const [showAddUserModal, setShowAddUserModal] = useState(false);
-    const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  };
 
-    const statsData = [
-        {
-            title: "Manage Users",
-            subtitle: "Oversee user registrations, approvals, and role management",
-            value: "1,247",
-            label: "total users",
-            growth: "+12.5%",
-            color: "blue",
-            icon: "👥"
-        },
-        {
-            title: "Create Events",
-            subtitle: "Plan and manage institutional events and activities",
-            value: "24",
-            label: "active events",
-            growth: "+8.3%",
-            color: "green",
-            icon: "📅"
-        },
-        {
-            title: "View Analytics",
-            subtitle: "Monitor platform performance and user engagement",
-            value: "89",
-            label: "engagement rate",
-            growth: "+15.2%",
-            color: "purple",
-            icon: "📊"
-        },
-        {
-            title: "System Reports",
-            subtitle: "Generate comprehensive reports and system monitoring",
-            value: "156",
-            label: "reports generated",
-            growth: "+22.1%",
-            color: "orange",
-            icon: "📋"
+  const getStatusColor = (status) => {
+    const colors = {
+      "Pending": "badge-warning",
+      "Approved": "badge-success",
+      "Rejected": "badge-danger",
+      "Published": "badge-success",
+      "Draft": "badge-secondary",
+      "healthy": "badge-success",
+      "warning": "badge-warning",
+      "normal": "badge-primary"
+    };
+    return colors[status] || "badge-secondary";
+  };
+
+  return (
+    <div className="professional-dashboard">
+      <style jsx>{`
+        .professional-dashboard {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+          color: #ffffff;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          line-height: 1.6;
         }
-    ];
 
-    const recentUsers = [
-        { name: "John Doe", email: "john@example.com", role: "Alumni", status: "Pending", joinDate: "2025-09-18", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" },
-        { name: "Sarah Wilson", email: "sarah@example.com", role: "Student", status: "Approved", joinDate: "2025-09-17", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b4c0?w=40&h=40&fit=crop&crop=face" },
-        { name: "Michael Chen", email: "michael@example.com", role: "Alumni", status: "Approved", joinDate: "2025-09-16", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" },
-        { name: "Emily Davis", email: "emily@example.com", role: "Faculty", status: "Pending", joinDate: "2025-09-15", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" }
-    ];
+        .dashboard-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 2rem;
+        }
 
-    const upcomingEvents = [
-        { title: "Alumni Meetup 2024", date: "Dec 15, 2024", attendees: 45, status: "Published", organizer: "Admin" },
-        { title: "Career Workshop", date: "Nov 20, 2024", attendees: 23, status: "Draft", organizer: "Sarah Wilson" },
-        { title: "Tech Talk: AI", date: "Nov 10, 2024", attendees: 67, status: "Published", organizer: "Admin" }
-    ];
+        .dashboard-header {
+          margin-bottom: 3rem;
+          text-align: center;
+        }
 
-    const systemMetrics = [
-        { label: "Server Uptime", value: "99.9%", status: "healthy" },
-        { label: "Database Performance", value: "Good", status: "healthy" },
-        { label: "Active Sessions", value: "234", status: "normal" },
-        { label: "Storage Usage", value: "67%", status: "warning" }
-    ];
+        .dashboard-title {
+          font-size: 3rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, #00d4ff 0%, #ff6b6b 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 0.5rem;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-    const handleFilterChange = (filterType, value) => {
-        setSelectedFilter(prev => ({
-            ...prev,
-            [filterType]: value
-        }));
-    };
+        .dashboard-subtitle {
+          font-size: 1.25rem;
+          color: #94a3b8;
+          font-weight: 500;
+        }
 
-    const resetFilters = () => {
-        setSelectedFilter({
-            userRole: 'All Roles',
-            dateRange: 'Last 30 days',
-            activityType: 'All Activities',
-            status: 'All Status'
-        });
-    };
+        .tab-navigation {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 3rem;
+          background: rgba(15, 23, 42, 0.8);
+          padding: 0.5rem;
+          border-radius: 16px;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    const getStatusColor = (status) => {
-        const colors = {
-            "Pending": "badge-warning",
-            "Approved": "badge-success",
-            "Rejected": "badge-danger",
-            "Published": "badge-success",
-            "Draft": "badge-secondary",
-            "healthy": "badge-success",
-            "warning": "badge-warning",
-            "normal": "badge-primary"
-        };
-        return colors[status] || "badge-secondary";
-    };
+        .tab-button {
+          padding: 1rem 2rem;
+          background: transparent;
+          color: #94a3b8;
+          border: none;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+        }
 
-    return (
-        <div className="alumni-dashboard-container">
-            {/* Add User Modal */}
-            {showAddUserModal && (
-                <div className="modal-overlay" onClick={() => setShowAddUserModal(false)}>
-                    <div
-                        className="modal-content max-w-2xl w-full p-6 sm:p-8"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3 className="text-2xl font-bold text-slate-900 mb-6">Add New User</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input type="text" placeholder="Full Name" className="input" />
-                            <input type="email" placeholder="Email Address" className="input" />
-                            <input type="tel" placeholder="Phone Number" className="input" />
-                            <select className="input">
-                                <option>Select Role</option>
-                                <option>Alumni</option>
-                                <option>Student</option>
-                                <option>Faculty</option>
-                                <option>Admin</option>
-                            </select>
-                            <input type="text" placeholder="Batch/Year" className="input" />
-                            <input type="text" placeholder="Department" className="input" />
-                        </div>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                            <button
-                                onClick={() => setShowAddUserModal(false)}
-                                className="btn btn-primary flex-1 py-3"
-                            >
-                                Add User
-                            </button>
-                            <button
-                                onClick={() => setShowAddUserModal(false)}
-                                className="btn btn-secondary py-3 px-6"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+        .tab-button.active {
+          background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+          color: #ffffff;
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
 
-            {/* Create Event Modal */}
-            {showCreateEventModal && (
-                <div className="modal-overlay" onClick={() => setShowCreateEventModal(false)}>
-                    <div
-                        className="modal-content max-w-2xl w-full p-6 sm:p-8"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3 className="text-2xl font-bold text-slate-900 mb-6">Create New Event</h3>
-                        <div className="space-y-4">
-                            <input type="text" placeholder="Event Title" className="input" />
-                            <textarea placeholder="Event Description" className="input resize-none" rows="3" />
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="datetime-local" className="input" />
-                                <input type="text" placeholder="Location" className="input" />
-                                <select className="input">
-                                    <option>Select Category</option>
-                                    <option>Networking</option>
-                                    <option>Career</option>
-                                    <option>Technology</option>
-                                    <option>Business</option>
-                                </select>
-                                <input type="number" placeholder="Max Attendees" className="input" />
-                            </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                            <button
-                                onClick={() => setShowCreateEventModal(false)}
-                                className="btn btn-success flex-1 py-3"
-                            >
-                                Create Event
-                            </button>
-                            <button
-                                onClick={() => setShowCreateEventModal(false)}
-                                className="btn btn-secondary py-3 px-6"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+        .tab-button:hover {
+          color: #ffffff;
+          background: rgba(59, 130, 246, 0.2);
+        }
 
-            <div className="w-full min-h-screen pt-20 px-2 sm:px-4 lg:px-6 py-6">
-                <div className="w-full max-w-[98vw] mx-auto">
+        .filters-section {
+          background: rgba(15, 23, 42, 0.8);
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 3rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+        }
 
-                    {/* Admin Navigation */}
-                    <div className="glass-card p-2 mb-6 sm:mb-8 animate-fade-in">
-                        <div className="flex space-x-1 overflow-x-auto">
-                            {[
-                                { id: 'overview', name: 'Overview', icon: '📊' },
-                                { id: 'users', name: 'User Management', icon: '👥' },
-                                { id: 'events', name: 'Events', icon: '📅' },
-                                { id: 'analytics', name: 'Analytics', icon: '📈' },
-                                { id: 'monitoring', name: 'System Monitoring', icon: '🖥️' }
-                            ].map(tab => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`btn flex-shrink-0 py-3 px-4 sm:px-6 text-sm ${activeTab === tab.id ? 'btn-primary' : 'btn-secondary'}`}
-                                >
-                                    <span className="mr-2">{tab.icon}</span>
-                                    {tab.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+        .filters-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
 
-                    {activeTab === 'overview' && (
-                        <>
-                            {/* Stats Cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                                {statsData.map((stat, index) => (
-                                    <div
-                                        key={index}
-                                        className={`glass-card card-hover p-6 animate-slide-up animated-border`}
-                                        style={{ animationDelay: `${index * 100}ms` }}
-                                    >
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div className={`p-3 rounded-xl bg-${stat.color}-100`}>
-                                                <span className="text-2xl">{stat.icon}</span>
-                                            </div>
-                                            <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded">
-                                                {stat.growth}
-                                            </span>
-                                        </div>
-                                        <h3 className="text-lg font-bold text-slate-900 mb-2">{stat.title}</h3>
-                                        <p className="text-slate-600 text-sm mb-4">{stat.subtitle}</p>
-                                        <div className="flex items-baseline space-x-2">
-                                            <span className={`text-3xl font-bold text-${stat.color}-600`}>{stat.value}</span>
-                                            <span className="text-slate-500 text-sm">{stat.label}</span>
-                                        </div>
-                                        <div className="mt-4">
-                                            <button className="btn btn-secondary w-full text-sm">
-                                                {stat.title.split(' ')[0]} {stat.title.split(' ')[1]} →
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+        .filter-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
 
-                            {/* Quick Filters */}
-                            <div className="glass-card p-6 mb-8 animate-fade-in">
-                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                                    <h3 className="text-lg font-bold text-slate-900 flex items-center mb-4 sm:mb-0">
-                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
-                                        </svg>
-                                        Quick Filters
-                                    </h3>
-                                    <button
-                                        onClick={resetFilters}
-                                        className="btn btn-secondary text-sm px-4 py-2"
-                                    >
-                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                        </svg>
-                                        Reset
-                                    </button>
-                                </div>
+        .filter-label {
+          font-weight: 700;
+          color: #ffffff;
+          font-size: 0.95rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">User Role</label>
-                                        <select
-                                            value={selectedFilter.userRole}
-                                            onChange={(e) => handleFilterChange('userRole', e.target.value)}
-                                            className="input"
-                                        >
-                                            <option>All Roles</option>
-                                            <option>Alumni</option>
-                                            <option>Students</option>
-                                            <option>Faculty</option>
-                                            <option>Admin</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Date Range</label>
-                                        <select
-                                            value={selectedFilter.dateRange}
-                                            onChange={(e) => handleFilterChange('dateRange', e.target.value)}
-                                            className="input"
-                                        >
-                                            <option>Last 30 days</option>
-                                            <option>Last 7 days</option>
-                                            <option>This Month</option>
-                                            <option>Last Month</option>
-                                            <option>This Year</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Activity Type</label>
-                                        <select
-                                            value={selectedFilter.activityType}
-                                            onChange={(e) => handleFilterChange('activityType', e.target.value)}
-                                            className="input"
-                                        >
-                                            <option>All Activities</option>
-                                            <option>Registrations</option>
-                                            <option>Events</option>
-                                            <option>Donations</option>
-                                            <option>Logins</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Status</label>
-                                        <select
-                                            value={selectedFilter.status}
-                                            onChange={(e) => handleFilterChange('status', e.target.value)}
-                                            className="input"
-                                        >
-                                            <option>All Status</option>
-                                            <option>Active</option>
-                                            <option>Pending</option>
-                                            <option>Suspended</option>
-                                            <option>Archived</option>
-                                        </select>
-                                    </div>
-                                </div>
+        .filter-select {
+          padding: 1rem;
+          background: rgba(30, 41, 59, 0.9);
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          color: #ffffff;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
 
-                                <div className="flex flex-wrap gap-2 mt-4">
-                                    <span className="badge badge-primary">Students Only</span>
-                                    <span className="badge badge-success">Alumni Only</span>
-                                    <span className="badge badge-warning">Pending Approval</span>
-                                    <span className="badge badge-secondary">This Week</span>
-                                </div>
-                            </div>
+        .filter-select:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
 
-                            {/* Management Sections */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                {/* User Management */}
-                                <div className="glass-card p-6 animate-slide-up">
-                                    <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-bold text-slate-900">User Management</h3>
-                                        <button
-                                            onClick={() => setShowAddUserModal(true)}
-                                            className="btn btn-primary text-sm px-4 py-2"
-                                        >
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
-                                            Add User
-                                        </button>
-                                    </div>
-                                    <p className="text-slate-600 text-sm mb-6">Manage user registrations and role requests</p>
+        .filter-actions {
+          display: flex;
+          gap: 1rem;
+        }
 
-                                    <div className="space-y-4">
-                                        {recentUsers.map((user, index) => (
-                                            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                                                <div className="flex items-center space-x-3">
-                                                    <img
-                                                        src={user.avatar}
-                                                        alt={user.name}
-                                                        className="w-10 h-10 rounded-full object-cover"
-                                                    />
-                                                    <div>
-                                                        <p className="font-medium text-slate-900">{user.name}</p>
-                                                        <p className="text-slate-500 text-sm">{user.email}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <span className="badge badge-secondary text-xs">{user.role}</span>
-                                                    <span className={`badge ${getStatusColor(user.status)} text-xs`}>
-                                                        {user.status}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+        .btn {
+          padding: 1rem 2rem;
+          border: none;
+          border-radius: 12px;
+          font-weight: 700;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
 
-                                    <div className="mt-6">
-                                        <select className="input mb-4">
-                                            <option>All Users</option>
-                                            <option>Alumni</option>
-                                            <option>Students</option>
-                                            <option>Faculty</option>
-                                        </select>
-                                    </div>
-                                </div>
+        .btn-primary {
+          background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+          color: #ffffff;
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
 
-                                {/* Events Management */}
-                                <div className="glass-card p-6 animate-slide-up">
-                                    <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-bold text-slate-900">Events Management</h3>
-                                        <button
-                                            onClick={() => setShowCreateEventModal(true)}
-                                            className="btn btn-success text-sm px-4 py-2"
-                                        >
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
-                                            Create Event
-                                        </button>
-                                    </div>
-                                    <p className="text-slate-600 text-sm mb-6">Manage institutional events and attendance</p>
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+        }
 
-                                    <div className="flex space-x-4 mb-6">
-                                        <button className="btn btn-primary text-sm px-4 py-2">Upcoming Events</button>
-                                        <button className="btn btn-secondary text-sm px-4 py-2">Past Events</button>
-                                    </div>
+        .btn-secondary {
+          background: rgba(75, 85, 99, 0.8);
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-                                    <div className="space-y-4">
-                                        {upcomingEvents.map((event, index) => (
-                                            <div key={index} className="border-l-4 border-blue-500 pl-4 py-2">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <h4 className="font-medium text-slate-900">{event.title}</h4>
-                                                        <p className="text-slate-500 text-sm">{event.date}</p>
-                                                        <p className="text-slate-400 text-xs">Organized by {event.organizer}</p>
-                                                    </div>
-                                                    <div className="text-right">
-                                                        <span className={`badge ${getStatusColor(event.status)} text-xs`}>
-                                                            {event.status}
-                                                        </span>
-                                                        <p className="text-slate-500 text-xs mt-1">{event.attendees} attendees</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )}
+        .btn-secondary:hover {
+          background: rgba(107, 114, 128, 0.9);
+        }
 
-                    {activeTab === 'users' && (
-                        <div className="glass-card p-6 animate-slide-up">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold text-slate-900">User Management</h2>
-                                <button
-                                    onClick={() => setShowAddUserModal(true)}
-                                    className="btn btn-primary"
-                                >
-                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Add User
-                                </button>
-                            </div>
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin-bottom: 3rem;
+        }
 
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {recentUsers.map((user, index) => (
-                                            <tr key={index} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center">
-                                                        <img className="h-10 w-10 rounded-full" src={user.avatar} alt={user.name} />
-                                                        <div className="ml-4">
-                                                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                                                            <div className="text-sm text-gray-500">{user.email}</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="badge badge-secondary">{user.role}</span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`badge ${getStatusColor(user.status)}`}>{user.status}</span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {user.joinDate}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                    <button className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                                    <button className="text-red-600 hover:text-red-900">Delete</button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )}
+        .stat-card {
+          background: rgba(15, 23, 42, 0.8);
+          border-radius: 20px;
+          padding: 2.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
 
-                    {activeTab === 'events' && (
-                        <div className="glass-card p-6 animate-slide-up">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold text-slate-900">Events Management</h2>
-                                <button
-                                    onClick={() => setShowCreateEventModal(true)}
-                                    className="btn btn-success"
-                                >
-                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Create Event
-                                </button>
-                            </div>
+        .stat-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
 
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                {upcomingEvents.map((event, index) => (
-                                    <div key={index} className="glass-card p-4 card-hover">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <h3 className="font-bold text-slate-900">{event.title}</h3>
-                                            <span className={`badge ${getStatusColor(event.status)}`}>{event.status}</span>
-                                        </div>
-                                        <p className="text-slate-600 text-sm mb-2">{event.date}</p>
-                                        <p className="text-slate-500 text-xs mb-4">By {event.organizer}</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-slate-600">{event.attendees} attendees</span>
-                                            <button className="btn btn-primary text-xs px-3 py-1">Manage</button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+        .stat-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #3b82f6, #10b981, #8b5cf6, #f59e0b);
+        }
 
-                    {activeTab === 'analytics' && (
-                        <div className="space-y-6">
-                            <div className="glass-card p-6 animate-slide-up">
-                                <h2 className="text-2xl font-bold text-slate-900 mb-6">Analytics Overview</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    <div className="text-center">
-                                        <div className="text-3xl font-bold text-blue-600">89%</div>
-                                        <div className="text-slate-600 text-sm">User Engagement</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-3xl font-bold text-green-600">1,247</div>
-                                        <div className="text-slate-600 text-sm">Active Users</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-3xl font-bold text-purple-600">24</div>
-                                        <div className="text-slate-600 text-sm">Events This Month</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-3xl font-bold text-orange-600">₹2.4L</div>
-                                        <div className="text-slate-600 text-sm">Donations Raised</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+        .stat-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+        }
 
-                    {activeTab === 'monitoring' && (
-                        <div className="glass-card p-6 animate-slide-up">
-                            <h2 className="text-2xl font-bold text-slate-900 mb-6">System Monitoring</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {systemMetrics.map((metric, index) => (
-                                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                        <span className="font-medium text-slate-900">{metric.label}</span>
-                                        <div className="flex items-center space-x-2">
-                                            <span className="font-bold text-slate-900">{metric.value}</span>
-                                            <span className={`badge ${getStatusColor(metric.status)}`}>{metric.status}</span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+        .stat-icon {
+          font-size: 2.5rem;
+          filter: grayscale(1) brightness(1.2);
+        }
 
-                    {/* Footer */}
-                    <footer className="glass-card mt-8 p-4 sm:p-6 text-center">
-                        <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                            <p className="text-slate-600 text-sm sm:text-base">
-                                © 2025 Alumni Network - Admin Dashboard
-                            </p>
-                            <div className="flex space-x-4 sm:space-x-6 text-sm">
-                                <a href="#" className="text-slate-500 hover:text-blue-600 transition-colors font-medium">System Logs</a>
-                                <a href="#" className="text-slate-500 hover:text-blue-600 transition-colors font-medium">Settings</a>
-                                <a href="#" className="text-slate-500 hover:text-blue-600 transition-colors font-medium">Help</a>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
+        .stat-title {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .stat-subtitle {
+          font-size: 1rem;
+          color: #94a3b8;
+          margin-top: 0.5rem;
+          font-weight: 500;
+        }
+
+        .stat-value {
+          font-size: 3rem;
+          font-weight: 900;
+          color: #ffffff;
+          margin-bottom: 0.5rem;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+          font-size: 1rem;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: 600;
+        }
+
+        .stat-growth {
+          font-size: 1.1rem;
+          color: #10b981;
+          font-weight: 700;
+          margin-top: 0.5rem;
+        }
+
+        .content-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+          margin-bottom: 3rem;
+        }
+
+        .content-section {
+          background: rgba(15, 23, 42, 0.8);
+          border-radius: 16px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+        }
+
+        .section-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .section-subtitle {
+          color: #94a3b8;
+          font-size: 1rem;
+          margin-top: 0.5rem;
+          font-weight: 500;
+        }
+
+        .user-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .user-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1.5rem;
+          background: rgba(30, 41, 59, 0.5);
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .user-item:hover {
+          background: rgba(51, 65, 85, 0.7);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          object-fit: cover;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-info {
+          flex: 1;
+        }
+
+        .user-name {
+          font-weight: 700;
+          color: #ffffff;
+          margin-bottom: 0.25rem;
+          font-size: 1.1rem;
+        }
+
+        .user-email {
+          color: #94a3b8;
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+
+        .badge {
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          font-size: 0.85rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+          background: rgba(16, 185, 129, 0.2);
+          color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-warning {
+          background: rgba(245, 158, 11, 0.2);
+          color: #f59e0b;
+          border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-danger {
+          background: rgba(239, 68, 68, 0.2);
+          color: #ef4444;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-primary {
+          background: rgba(59, 130, 246, 0.2);
+          color: #3b82f6;
+          border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge-secondary {
+          background: rgba(107, 114, 128, 0.2);
+          color: #6b7280;
+          border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .badge-purple {
+          background: rgba(139, 92, 246, 0.2);
+          color: #8b5cf6;
+          border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .event-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .event-item {
+          padding: 1.5rem;
+          background: rgba(30, 41, 59, 0.5);
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+          background: rgba(51, 65, 85, 0.7);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .event-header {
+          display: flex;
+          justify-content: between;
+          align-items: flex-start;
+          margin-bottom: 1rem;
+        }
+
+        .event-title {
+          font-weight: 700;
+          color: #ffffff;
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .event-date {
+          color: #94a3b8;
+          font-weight: 500;
+          font-size: 0.95rem;
+        }
+
+        .event-meta {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 1rem;
+          font-size: 0.9rem;
+        }
+
+        .event-organizer {
+          color: #94a3b8;
+          font-weight: 500;
+        }
+
+        .event-attendees {
+          color: #10b981;
+          font-weight: 600;
+        }
+
+        .system-metrics {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .metric-item {
+          background: rgba(30, 41, 59, 0.5);
+          border-radius: 12px;
+          padding: 1.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          text-align: center;
+          transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+          background: rgba(51, 65, 85, 0.7);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .metric-label {
+          color: #94a3b8;
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #ffffff;
+        }
+
+        .data-table {
+          width: 100%;
+          background: rgba(15, 23, 42, 0.8);
+          border-radius: 16px;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-header {
+          background: rgba(30, 41, 59, 0.8);
+          padding: 1.5rem 2rem;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-title {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .table-content {
+          padding: 2rem;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        th, td {
+          padding: 1rem;
+          text-align: left;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+          font-weight: 700;
+          color: #ffffff;
+          background: rgba(30, 41, 59, 0.5);
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        td {
+          color: #ffffff;
+          font-weight: 500;
+        }
+
+        tr:hover {
+          background: rgba(51, 65, 85, 0.3);
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .btn-sm {
+          padding: 0.5rem 1rem;
+          font-size: 0.85rem;
+          border-radius: 8px;
+        }
+
+        .btn-success {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: #ffffff;
+          border: none;
+        }
+
+        .btn-danger {
+          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+          color: #ffffff;
+          border: none;
+        }
+
+        .btn-info {
+          background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+          color: #ffffff;
+          border: none;
+        }
+
+        @media (max-width: 768px) {
+          .content-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .stats-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .dashboard-title {
+            font-size: 2rem;
+          }
+
+          .filters-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .tab-navigation {
+            flex-wrap: wrap;
+          }
+        }
+      `}</style>
+
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <h1 className="dashboard-title">Admin Dashboard</h1>
+          <p className="dashboard-subtitle">Monitor and manage your platform with powerful analytics</p>
+        </header>
+
+        <nav className="tab-navigation">
+          <button
+            className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            Overview
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'users' ? 'active' : ''}`}
+            onClick={() => setActiveTab('users')}
+          >
+            Users
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'events' ? 'active' : ''}`}
+            onClick={() => setActiveTab('events')}
+          >
+            Events
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'analytics' ? 'active' : ''}`}
+            onClick={() => setActiveTab('analytics')}
+          >
+            Analytics
+          </button>
+        </nav>
+
+        <div className="filters-section">
+          <div className="filters-grid">
+            <div className="filter-group">
+              <label className="filter-label">User Role</label>
+              <select
+                className="filter-select"
+                value={selectedFilter.userRole}
+                onChange={(e) => handleFilterChange('userRole', e.target.value)}
+              >
+                <option>All Roles</option>
+                <option>Alumni</option>
+                <option>Student</option>
+                <option>Faculty</option>
+                <option>Admin</option>
+              </select>
             </div>
+            <div className="filter-group">
+              <label className="filter-label">Date Range</label>
+              <select
+                className="filter-select"
+                value={selectedFilter.dateRange}
+                onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+              >
+                <option>Last 30 days</option>
+                <option>Last 7 days</option>
+                <option>Last 90 days</option>
+                <option>This year</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label className="filter-label">Activity Type</label>
+              <select
+                className="filter-select"
+                value={selectedFilter.activityType}
+                onChange={(e) => handleFilterChange('activityType', e.target.value)}
+              >
+                <option>All Activities</option>
+                <option>Registrations</option>
+                <option>Events</option>
+                <option>Communications</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label className="filter-label">Status</label>
+              <select
+                className="filter-select"
+                value={selectedFilter.status}
+                onChange={(e) => handleFilterChange('status', e.target.value)}
+              >
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+          <div className="filter-actions">
+            <button className="btn btn-primary">Apply Filters</button>
+            <button className="btn btn-secondary" onClick={resetFilters}>Reset</button>
+          </div>
         </div>
-    );
+
+        <div className="stats-grid">
+          {statsData.map((stat, index) => (
+            <div key={index} className="stat-card">
+              <div className="stat-header">
+                <div className="stat-icon">{stat.icon}</div>
+                <div>
+                  <h3 className="stat-title">{stat.title}</h3>
+                  <p className="stat-subtitle">{stat.subtitle}</p>
+                </div>
+              </div>
+              <div className="stat-value">{stat.value}</div>
+              <div className="stat-label">{stat.label}</div>
+              <div className="stat-growth">{stat.growth}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="content-grid">
+          <div className="content-section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Recent Users</h2>
+                <p className="section-subtitle">Manage user registrations and role requests</p>
+              </div>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowAddUserModal(true)}
+              >
+                Add User
+              </button>
+            </div>
+            
+            <div className="user-list">
+              {recentUsers.map((user, index) => (
+                <div key={index} className="user-item">
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="user-avatar"
+                  />
+                  <div className="user-info">
+                    <div className="user-name">{user.name}</div>
+                    <div className="user-email">{user.email}</div>
+                  </div>
+                  <span className={`badge ${getStatusColor(user.status)}`}>
+                    {user.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="content-section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Upcoming Events</h2>
+                <p className="section-subtitle">Manage institutional events and attendance</p>
+              </div>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowCreateEventModal(true)}
+              >
+                Create Event
+              </button>
+            </div>
+
+            <div className="event-list">
+              {upcomingEvents.map((event, index) => (
+                <div key={index} className="event-item">
+                  <div className="event-header">
+                    <div>
+                      <div className="event-title">{event.title}</div>
+                      <div className="event-date">{event.date}</div>
+                    </div>
+                    <span className={`badge ${getStatusColor(event.status)}`}>
+                      {event.status}
+                    </span>
+                  </div>
+                  <div className="event-meta">
+                    <span className="event-organizer">Organized by {event.organizer}</span>
+                    <span className="event-attendees">{event.attendees} attendees</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="content-section">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">System Metrics</h2>
+              <p className="section-subtitle">Real-time system performance monitoring</p>
+            </div>
+          </div>
+          <div className="system-metrics">
+            {systemMetrics.map((metric, index) => (
+              <div key={index} className="metric-item">
+                <div className="metric-label">{metric.label}</div>
+                <div className="metric-value">
+                  {metric.value}
+                  <span className={`badge ${getStatusColor(metric.status)}`} style={{ marginLeft: '0.5rem', fontSize: '0.7rem' }}>
+                    {metric.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="data-table">
+          <div className="table-header">
+            <h2 className="table-title">User Management</h2>
+          </div>
+          <div className="table-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Join Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentUsers.map((user, index) => (
+                  <tr key={index}>
+                    <td>
+                      <div className="user-item" style={{ background: 'transparent', border: 'none', padding: 0 }}>
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="user-avatar"
+                          style={{ width: '32px', height: '32px' }}
+                        />
+                        <div className="user-info">
+                          <div className="user-name" style={{ fontSize: '1rem' }}>{user.name}</div>
+                          <div className="user-email" style={{ fontSize: '0.85rem' }}>{user.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`badge badge-primary`}>
+                        {user.role}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge ${getStatusColor(user.status)}`}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td>{user.joinDate}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button className="btn btn-success btn-sm">Approve</button>
+                        <button className="btn btn-info btn-sm">Edit</button>
+                        <button className="btn btn-danger btn-sm">Reject</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="content-section" style={{ marginTop: '2rem' }}>
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Event Management</h2>
+              <p className="section-subtitle">Upcoming events and registration status</p>
+            </div>
+          </div>
+          
+          <div className="event-list">
+            {upcomingEvents.map((event, index) => (
+              <div key={index} className="event-item">
+                <div className="event-header">
+                  <div>
+                    <div className="event-title">{event.title}</div>
+                    <div className="event-date">{event.date}</div>
+                  </div>
+                  <span className={`badge ${getStatusColor(event.status)}`}>
+                    {event.status}
+                  </span>
+                </div>
+                <div className="event-meta">
+                  <span className="event-organizer">By {event.organizer}</span>
+                  <span className="event-attendees">{event.attendees} registered</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -1,96 +1,50 @@
-import React from 'react';
-import Header from '../../components/Shared/Header';
-import StatsCard from '../../components/Shared/StatsCard';
-import QuickActions from '../../components/ForStudent/QuickActions';
-import RecommendedMentors from '../../components/ForStudent/RecommendedMentors';
-import UpcomingEvents from '../../components/ForStudent/UpcomingEvents';
-import ActivityFeed from '../../components/Shared/ActivityFeed';
+import React, { useEffect, useRef, useState } from 'react';
+import NET from 'vanta/dist/vanta.net.min';
+import * as THREE from 'three';
 
-const StudentDashboard = () => {
-    // Student-specific stats data
-    const statsData = [
-        {
-            title: "Active Connections",
-            value: "12",
-            change: "25% from last month",
-            changeType: "positive",
-            icon: "👥",
-            color: "teal"
-        },
-        {
-            title: "Events Attended",
-            value: "8",
-            change: "14% from last month",
-            changeType: "positive",
-            icon: "📅",
-            color: "blue"
-        },
-        {
-            title: "Career Resources",
-            value: "24",
-            change: "8% from last month",
-            changeType: "positive",
-            icon: "📚",
-            color: "purple"
-        },
-        {
-            title: "Profile Views",
-            value: "156",
-            change: "32% from last month",
-            changeType: "positive",
-            icon: "👁️",
-            color: "orange"
-        }
-    ];
+import NavBar from './components/Nav';
 
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <Header userRole="student" />
+// Import the scoped CSS
+import './StudentsDashboard.css';
 
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Welcome Section */}
-                <div className="mb-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                        <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
-                            <span className="text-2xl">🎓</span>
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900">
-                                Good morning, Alex Johnson! 🎓
-                            </h1>
-                            <p className="text-gray-600">
-                                Computer Science • Junior • Student ID: STU2024001
-                            </p>
-                        </div>
-                    </div>
-                </div>
+export default function StudentDashboard() {
+  const [vantaEffect, setVantaEffect] = useState(null);
+  const vantaRef = useRef(null);
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {statsData.map((stat, index) => (
-                        <StatsCard key={index} {...stat} />
-                    ))}
-                </div>
+  useEffect(() => {
+    if (!vantaEffect && vantaRef.current) {
+      setVantaEffect(
+        NET({
+          el: vantaRef.current,
+          THREE: THREE,
+          color: 0x7c3aed,
+          backgroundColor: 0x101827,
+          points: 12.0,
+          maxDistance: 25.0,
+          spacing: 20.0,
+          showDots: true,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+        })
+      );
+    }
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, [vantaEffect]);
 
-                {/* Quick Actions */}
-                <QuickActions />
+  return (
+    <div className="alumni-dashboard-container">
+      {/* Vanta background - fixed and full screen behind content */}
+      <div
+        ref={vantaRef}
+        className="fixed top-0 left-0 w-screen h-screen"
+        style={{ zIndex: -50, pointerEvents: 'none' }}
+      />
 
-                {/* Main Content Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                    {/* Left Column */}
-                    <div className="lg:col-span-2 space-y-8">
-                        <RecommendedMentors />
-                        <UpcomingEvents />
-                    </div>
-
-                    {/* Right Column */}
-                    <div className="lg:col-span-1">
-                        <ActivityFeed />
-                    </div>
-                </div>
-            </main>
-        </div>
-    );
-};
-
-export default StudentDashboard;
+      {/* Your existing NavBar handles everything else */}
+      <NavBar />
+    </div>
+  );
+}
