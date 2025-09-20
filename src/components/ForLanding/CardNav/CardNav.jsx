@@ -160,9 +160,7 @@ const CardNav = ({
                         <div className="hamburger-line" />
                     </div>
 
-                    <div className="logo-container">
-                        <img src={logo} alt={logoAlt} className="logo" />
-                    </div>
+
 
                     <button
                         type="button"
