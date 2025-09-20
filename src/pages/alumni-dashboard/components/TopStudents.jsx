@@ -77,7 +77,7 @@ export default function TopStudents() {
   };
 
   return (
-    <div className="w-full min-h-screen pt-20 px-2 py-6 zoom-90">
+    <div className="w-full min-h-screen pt-20 px-2 py-6 zoom-90 bg-gray-300">
       <div className="w-full max-w-[95vw] mx-auto bg-slate-200/25 backdrop-blur-xl border border-white/30 shadow-2xl rounded-3xl p-6">
         {/* Header */}
         <div className="mb-6">

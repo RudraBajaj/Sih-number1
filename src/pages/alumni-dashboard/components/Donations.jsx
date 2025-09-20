@@ -292,7 +292,7 @@ export default function Donations() {
       )}
 
       {/* Main Content */}
-      <div className="w-full min-h-screen pt-20 px-1 sm:px-2 py-6">
+      <div className="w-full min-h-screen pt-20 px-1 sm:px-2 py-6 bg-gray-300">
         <div className="w-full max-w-[98vw] mx-auto">
           {/* Header */}
           <div className="glass-card-strong p-8 mb-8 animate-slide-up">

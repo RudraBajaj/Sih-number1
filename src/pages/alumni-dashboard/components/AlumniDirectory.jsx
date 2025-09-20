@@ -194,7 +194,7 @@ export default function AlumniDirectory() {
       )}
 
       {/* Main Content */}
-      <div className="w-full min-h-screen pt-20 px-2 sm:px-4 lg:px-6 py-6">
+      <div className="w-full min-h-screen pt-20 px-2 sm:px-4 lg:px-6 py-6 bg-gray-300">
         <div className="w-full max-w-[98vw] mx-auto">
           {/* Header */}
           <div className="glass-card-strong p-6 sm:p-8 mb-6 sm:mb-8 animate-slide-up">

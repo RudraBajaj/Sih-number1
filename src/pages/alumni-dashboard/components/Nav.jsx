@@ -14,7 +14,7 @@ const navigation = [
   { name: 'Alumni Directory', href: '#' },
   { name: 'Top Students', href: '#' },
   { name: 'Events', href: '#' },
-  { name: 'Donations', href: '#'},
+  { name: 'Donations', href: '#' },
 ];
 
 function classNames(...classes) {
@@ -35,7 +35,7 @@ export default function NavBar() {
 
       <Disclosure as="nav" className="fixed top-0 w-full bg-black bg-opacity-70 backdrop-blur-md shadow-lg z-50">
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-0 ">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
               <DisclosureButton className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
@@ -47,7 +47,8 @@ export default function NavBar() {
 
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex shrink-0 items-center">
-                <img src={logo} alt="Logo" className="h-8 w-auto hidden sm:block" />
+                <img src={logo} alt="Logo" className="h-12 w-12 hidden sm:block bg-gray-200 p-2 rounded-full" />
+
               </div>
               <div className="hidden sm:flex sm:items-center sm:justify-center sm:space-x-8 w-full">
                 {navigation.map(item => (
