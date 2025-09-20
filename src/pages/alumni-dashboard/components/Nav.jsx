@@ -8,6 +8,7 @@ import AlumniDirectory from './AlumniDirectory';
 import TopStudents from './TopStudents';
 import Events from './Event';
 import Donations from './Donations';
+import { Link } from "react-router-dom";  // ✅ add this at the top
 
 const navigation = [
   { name: 'Dashboard', href: '#' },
@@ -94,9 +95,12 @@ export default function NavBar() {
                 <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[9999]">
                   <MenuItem>
                     {({ active }) => (
-                      <a href="/profile" className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}>
+                      <Link
+                        to="/profile"
+                        className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}
+                      >
                         Your profile
-                      </a>
+                      </Link>
                     )}
                   </MenuItem>
                   <MenuItem>
