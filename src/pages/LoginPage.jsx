@@ -54,13 +54,6 @@ export default function SignInPage() {
             icon: <Shield size={18} />,
             desc: 'Manage users & settings',
             redirect: '/admin'
-        },
-        {
-            id: 'super-admin',
-            title: 'Super Admin',
-            icon: <Crown size={18} />,
-            desc: 'Full system control',
-            redirect: '/super-admin'
         }
     ];
 
