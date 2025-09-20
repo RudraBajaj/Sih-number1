@@ -112,9 +112,12 @@ export default function NavBar() {
                   </MenuItem>
                   <MenuItem>
                     {({ active }) => (
-                      <a href="login" className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}>
-                        Sign out
-                      </a>
+                      <Link
+                        to="/login"
+                        className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}
+                      >
+                        Logout
+                      </Link>
                     )}
                   </MenuItem>
                 </MenuItems>
