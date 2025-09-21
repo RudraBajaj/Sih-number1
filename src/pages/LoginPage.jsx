@@ -550,9 +550,13 @@ export default function SignInPage() {
 
                                     <div className={`mt-4 sm:mt-6 lg:mt-8 text-center text-xs sm:text-sm ${isDark ? 'text-gray-300' : 'text-slate-600'}`}>
                                         Don&apos;t have an account?{' '}
-                                        <a href="#" className={`font-medium ${isDark ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} transition-colors`}>
+                                        <button
+                                            onClick={() => navigate("/register")}
+                                            className={`font-medium ${isDark ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'
+                                                } transition-colors`}
+                                        >
                                             Sign up for free
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
