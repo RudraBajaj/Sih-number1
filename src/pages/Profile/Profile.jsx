@@ -206,8 +206,8 @@ export default function Profile() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const [userProfile, setUserProfile] = useState({
-    name: "Arjun Sharma",
-    email: "arjun.sharma@example.com",
+    name: "Agampal Singh",
+    email: "agampalsingh@gmail.com",
     phone: "+91 98765 43210",
     batch: "2021",
     department: "Computer Science Engineering",
@@ -217,10 +217,10 @@ export default function Profile() {
     experience: "3 years",
     skills: ["React", "Node.js", "Python", "AWS", "MongoDB"],
     bio: "Passionate software engineer with expertise in full-stack development. Love building scalable applications and mentoring junior developers.",
-    linkedin: "https://linkedin.com/in/arjun-sharma",
-    github: "https://github.com/arjunsharma",
+    linkedin: "https://linkedin.com/in/agampal",
+    github: "https://github.com/agxmm01",
     website: "https://arjunsharma.dev",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+    avatar: "https://media.licdn.com/dms/image/v2/D5635AQFv_xIrKiOaew/profile-framedphoto-shrink_800_800/B56ZjLgy9cHUAg-/0/1755761029307?e=1759053600&v=beta&t=vz_NULyHc_vR4NEm0y-NKMEQ3MbaZdYjVwBMKEcv3iI",
     status: "online",
     joinedDate: "September 2024"
   });

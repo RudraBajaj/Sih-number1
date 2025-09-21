@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from './logo-removed.png';
+import studentImage from "./Student.jpg";
 
 import Dashboard from './Dashboard';
 import AlumniDirectory from './AlumniDirectory';
 import TopStudents from './TopStudents';
 import Events from './Event';
-import Donations from './Donations';
 import { Link } from "react-router-dom";  // ✅ add this at the top
 
 const navigation = [
@@ -15,7 +15,6 @@ const navigation = [
   { name: 'Alumni Directory', href: '#' },
   { name: 'Top Students', href: '#' },
   { name: 'Events', href: '#' },
-  { name: 'Donations', href: '#' },
 ];
 
 function classNames(...classes) {
@@ -77,18 +76,18 @@ export default function NavBar() {
             {/* Profile and Notifications Area */}
             <div className="absolute inset-y-0 right-0 flex items-center pr-4 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-4 z-[9999]">
               <div className="flex flex-col mr-2 text-right">
-                <span className="text-white font-semibold text-sm leading-tight">Kira</span>
-                <span className="text-indigo-400 text-xs font-medium">Alumni</span>
+                <span className="text-white font-semibold text-sm leading-tight">Divya</span>
+                <span className="text-indigo-400 text-xs font-medium">Student</span>
               </div>
-              <button type="button" className="rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                <span className="sr-only">View notifications</span>
+              <button type="button" className="rounded-full p-1 text-gray-400 hover:text-white focus:outline-non  e focus:ring-2 focus:ring-indigo-500 transition">
+                <span className="sr-only">View notifications</span> 
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <Menu as="div" className="relative z-[9999]">
                 <MenuButton className="relative flex rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <img
                     alt="User Avatar"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+                    src={studentImage}
                     className="h-10 w-10 rounded-full object-cover shadow-md ring-1 ring-indigo-600 ring-opacity-50 transition-transform duration-300 ease-in-out hover:scale-110"
                   />
                 </MenuButton>
@@ -161,7 +160,6 @@ export default function NavBar() {
             {selected === 'Alumni Directory' && <AlumniDirectory />}
             {selected === 'Top Students' && <TopStudents />}
             {selected === 'Events' && <Events />}
-            {selected === 'Donations' && <Donations />}
           </div>
         </section>
       </div>

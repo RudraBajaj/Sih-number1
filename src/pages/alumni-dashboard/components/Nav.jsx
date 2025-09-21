@@ -77,7 +77,7 @@ export default function NavBar() {
             {/* Profile and Notifications Area */}
             <div className="absolute inset-y-0 right-0 flex items-center pr-4 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-4 z-[9999]">
               <div className="flex flex-col mr-2 text-right">
-                <span className="text-white font-semibold text-sm leading-tight">Kira</span>
+                <span className="text-white font-semibold text-sm leading-tight">Agampal Singh</span>
                 <span className="text-indigo-400 text-xs font-medium">Alumni</span>
               </div>
               <button type="button" className="rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
@@ -88,7 +88,7 @@ export default function NavBar() {
                 <MenuButton className="relative flex rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <img
                     alt="User Avatar"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+                    src="https://media.licdn.com/dms/image/v2/D5635AQFv_xIrKiOaew/profile-framedphoto-shrink_800_800/B56ZjLgy9cHUAg-/0/1755761029307?e=1759053600&v=beta&t=vz_NULyHc_vR4NEm0y-NKMEQ3MbaZdYjVwBMKEcv3iI"
                     className="h-10 w-10 rounded-full object-cover shadow-md ring-1 ring-indigo-600 ring-opacity-50 transition-transform duration-300 ease-in-out hover:scale-110"
                   />
                 </MenuButton>
