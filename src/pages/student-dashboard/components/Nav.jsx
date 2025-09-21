@@ -80,7 +80,7 @@ export default function NavBar() {
                 <span className="text-indigo-400 text-xs font-medium">Student</span>
               </div>
               <button type="button" className="rounded-full p-1 text-gray-400 hover:text-white focus:outline-non  e focus:ring-2 focus:ring-indigo-500 transition">
-                <span className="sr-only">View notifications</span> 
+                <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <Menu as="div" className="relative z-[9999]">
@@ -95,18 +95,11 @@ export default function NavBar() {
                   <MenuItem>
                     {({ active }) => (
                       <Link
-                        to="/profile"
+                        to="/profile1"
                         className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}
                       >
                         Your profile
                       </Link>
-                    )}
-                  </MenuItem>
-                  <MenuItem>
-                    {({ active }) => (
-                      <a href="settings" className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}>
-                        Settings
-                      </a>
                     )}
                   </MenuItem>
                   <MenuItem>

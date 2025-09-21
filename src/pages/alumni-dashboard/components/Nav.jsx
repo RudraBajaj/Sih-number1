@@ -105,13 +105,6 @@ export default function NavBar() {
                   </MenuItem>
                   <MenuItem>
                     {({ active }) => (
-                      <a href="settings" className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}>
-                        Settings
-                      </a>
-                    )}
-                  </MenuItem>
-                  <MenuItem>
-                    {({ active }) => (
                       <Link
                         to="/login"
                         className={`block px-4 py-2 text-sm ${active ? 'bg-indigo-100' : 'text-gray-700'}`}

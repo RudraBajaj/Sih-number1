@@ -8,6 +8,8 @@ import RegisterPage from '../pages/RegisterPage';
 import StudentDashboard from "../pages/student-dashboard/StudentDashboard";
 import AlumniDashboard from "../pages/alumni-dashboard/AlumniDashboard";
 import Profile from "../pages/Profile/Profile";
+import DivProfile from "../pages/DivyaProfile/Profile";
+import Setting from "../pages/settings/Settings";
 import AdminDashboard from "../pages/admin-dashboard/AdminDashboard";
 
 //Missing pages 
@@ -34,6 +36,8 @@ const AppRoute = () => (
             <Route path="/donations" element={<Donations />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile1" element={<DivProfile />} />
+            <Route path="/setting" element={<Setting />} />
             {/* 404 Fallback  */}
             <Route path="*" element={<NotFound />} />
         </Routes>
